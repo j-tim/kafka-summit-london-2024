@@ -13,5 +13,8 @@
         <module>spring-kafka-consumer-first</module>
         <module>spring-kafka-consumer-second</module>
         <module>spring-kafka-consumer-third</module>
+        <module>spring-kafka-producer-one</module>
+        <module>spring-kafka-producer-two</module>
+        <module>spring-kafka-producer-three</module>
     </modules>
 </project>

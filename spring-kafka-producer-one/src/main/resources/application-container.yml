@@ -1,0 +1,6 @@
+spring:
+  kafka:
+    bootstrap-servers: broker:29092
+
+    properties:
+      schema.registry.url: http://schema-registry:8081

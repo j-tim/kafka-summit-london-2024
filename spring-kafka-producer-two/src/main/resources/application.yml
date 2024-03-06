@@ -1,0 +1,32 @@
+server:
+  port: 8085
+spring:
+  application:
+    name: producer-application-2
+
+  kafka:
+    bootstrap-servers: localhost:9092
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      client-id: ${spring.application.name}
+      properties:
+        auto.register.schemas: false
+        avro.remove.java.properties: true
+
+    properties:
+      schema.registry.url: http://localhost:8081
+
+# Open up all Spring Boot Actuator endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+kafka:
+  producer:
+    enabled: true
+    rate: 3000
+
