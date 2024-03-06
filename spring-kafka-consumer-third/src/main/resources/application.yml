@@ -1,0 +1,33 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: consumer-application-third
+
+  kafka:
+    bootstrap-servers: localhost:9092
+
+    consumer:
+      group-id: my-consumer-group-third
+      auto-offset-reset: earliest
+      # Configures the Spring Kafka ErrorHandlingDeserializer that delegates to the 'real' deserializers
+      key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      properties:
+        # Tells KafkaAvroDeserializer to look up the SpecificRecord class (the generated Java Class based on our Avro Schema)
+        specific.avro.reader: true
+#        use.latest.version: true
+        # Delegate deserializers
+        spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+        spring.deserializer.value.delegate.class: io.confluent.kafka.serializers.KafkaAvroDeserializer
+
+    properties:
+      schema.registry.url: http://localhost:8081
+
+management:
+
+  endpoints:
+    web:
+      exposure:
+        include: "*"

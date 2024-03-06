@@ -1,0 +1,17 @@
+{
+  "namespace": "com.example.avro.customer",
+  "type": "record",
+  "name": "CustomerBackwardDemo",
+  "version": 2,
+  "doc": "Avro schema for our customer.",
+  "fields": [
+    {
+      "name": "name",
+      "aliases": [
+        "customerName"
+      ],
+      "type": "string",
+      "doc": "The name of the Customer."
+    }
+  ]
+}

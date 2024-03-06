@@ -1,0 +1,28 @@
+{
+  "namespace": "com.example.avro.customer",
+  "type": "record",
+  "name": "CustomerForwardDemo",
+  "version": 1,
+  "doc": "Avro schema for our customer.",
+  "fields": [
+    {
+      "name": "name",
+      "type": "string",
+      "doc": "The name of the Customer."
+    },
+    {
+      "name": "phoneNumber",
+      "type": "string",
+      "doc": "The phone number of the Customer."
+    },
+    {
+      "name": "annualIncome",
+      "type": [
+        "null",
+        "double"
+      ],
+      "doc": "The annual income of the Customer.",
+      "default": null
+    }
+  ]
+}
