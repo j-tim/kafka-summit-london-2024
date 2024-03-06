@@ -1,4 +1,4 @@
-# Demo
+# Demo 1 - Backward Compatibility
 
 ## Build
 
@@ -24,7 +24,6 @@
 docker-compose -f docker-compose.yml up -d
 ```
 
-
 ## Start applications
 
 Make sure to build the Docker images for the applications first
@@ -33,9 +32,9 @@ Make sure to build the Docker images for the applications first
 ./startDemo1BackwardCompatibility.sh
 ```
 
-Above command will run all needed docker containers(infrastructure + applications)
+Above command will run all needed Docker containers(infrastructure + applications)
 
-## Start local producer with maven
+## Start local producer with Maven
 
 ```bash
 cd spring-kafka-producer-one

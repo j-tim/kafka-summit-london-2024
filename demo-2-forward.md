@@ -1,4 +1,4 @@
-# Demo
+# Demo 2 - Forward Compatibility
 
 ## Build
 
@@ -44,10 +44,6 @@ cd spring-kafka-consumer-first
 ```bash
 mvn spring-boot:run -Dspring-boot.run.fork=false -Dspring-boot.run.profiles=forward
 ```
-
-## Access Swagger UI (producer)
-
-* http://localhost:8080/swagger-ui/index.html
 
 ## Shutdown 
 
