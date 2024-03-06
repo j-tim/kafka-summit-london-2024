@@ -1,0 +1,30 @@
+# Docker compose file format 3.9 Required Docker Engine 19.03.0+
+# For more information see: https://docs.docker.com/compose/compose-file/compose-versioning/
+version: '3.9'
+
+services:
+  spring-kafka-consumer-first:
+    build: ./spring-kafka-consumer-first
+    container_name: spring-kafka-consumer-first
+    environment:
+      SPRING_PROFILES_ACTIVE: container,backward
+
+  spring-kafka-consumer-second:
+    build: ./spring-kafka-consumer-second
+    container_name: spring-kafka-consumer-second
+    environment:
+      SPRING_PROFILES_ACTIVE: container,backward
+
+  spring-kafka-consumer-third:
+    build: ./spring-kafka-consumer-third
+    container_name: spring-kafka-consumer-third
+    environment:
+      SPRING_PROFILES_ACTIVE: container,backward
+
+  kafka-producer-one:
+    build: ./spring-kafka-producer-one
+    container_name: kafka-producer-one
+    environment:
+      SPRING_PROFILES_ACTIVE: container,backward
+    ports:
+      - "8080:8080"
