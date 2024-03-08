@@ -56,3 +56,9 @@ Additionally, we can now register the new Schema (V2)
 cd avro-schemas
 ./mvnw io.confluent:kafka-schema-registry-maven-plugin:register@register-updated-schema -Pschema-compatibility-check-real-schema-registry
 ```
+
+Shutdown:
+
+```bash
+docker-compose down -v
+```
