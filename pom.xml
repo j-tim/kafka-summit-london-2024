@@ -10,6 +10,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>avro-schemas</module>
         <module>spring-kafka-consumer-first</module>
         <module>spring-kafka-consumer-second</module>
         <module>spring-kafka-consumer-third</module>

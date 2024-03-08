@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.example.avro</groupId>
+    <artifactId>avro-schemas</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>avro-schemas</name>
+    <description>Module for Avro files and Java Generated Code</description>
+
+    <properties>
+        <!-- Project settings -->
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.verbose>true</maven.compiler.verbose>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <confluent.schema.registry.url>http://localhost:8081/</confluent.schema.registry.url>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.avro/avro -->
+        <avro.version>1.11.3</avro.version>
+        <assertj-core.version>3.25.1</assertj-core.version>
+
+        <confluent.version>7.6.0</confluent.version>
+
+        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
+        <junit-jupiter-api.version>5.10.1</junit-jupiter-api.version>
+
+        <spring-core.version>6.1.2</spring-core.version>
+        <slf4j.version>2.0.9</slf4j.version>
+        <lombok.version>1.18.30</lombok.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.avro</groupId>
+            <artifactId>avro</artifactId>
+            <version>${avro.version}</version>
+        </dependency>
+
+        <!-- https://packages.confluent.io/maven/io/confluent/kafka-avro-serializer/ -->
+        <dependency>
+            <groupId>io.confluent</groupId>
+            <artifactId>kafka-avro-serializer</artifactId>
+            <version>${confluent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit-jupiter-api.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring-core.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj-core.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.confluent</groupId>
+            <artifactId>kafka-schema-registry-client</artifactId>
+            <version>${confluent.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- https://mvnrepository.com/artifact/org.apache.avro/avro-maven-plugin -->
+            <!-- https://avro.apache.org/docs/1.11.1/getting-started-java/ -->
+            <plugin>
+                <groupId>org.apache.avro</groupId>
+                <artifactId>avro-maven-plugin</artifactId>
+                <version>${avro.version}</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>schema</goal>
+                        </goals>
+                        <configuration>
+                            <sourceDirectory>src/main/resources/avro</sourceDirectory>
+                            <outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
+                            <!-- Use private visibility for Avro class fields instead of the default field visibility public -->
+                            <fieldVisibility>PRIVATE</fieldVisibility>
+                            <!-- Convert Avro string type into Java String instead of the default CharSequence -->
+                            <stringType>String</stringType>
+                            <!-- Convert Avro logicalType uuid into Java UUID instead of default String -->
+                            <customConversions>org.apache.avro.Conversions$UUIDConversion</customConversions>
+                            <createOptionalGetters>true</createOptionalGetters>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <repositories>
+        <!-- Confluent maven repo, required to find Confluent related dependencies -->
+        <repository>
+            <id>confluent</id>
+            <url>https://packages.confluent.io/maven/</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>confluent</id>
+            <url>https://packages.confluent.io/maven/</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <profiles>
+        <profile>
+            <id>schema-compatibility-check-local</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <!-- https://mvnrepository.com/artifact/io.confluent/kafka-schema-registry-maven-plugin -->
+                        <groupId>io.confluent</groupId>
+                        <artifactId>kafka-schema-registry-maven-plugin</artifactId>
+                        <version>${confluent.version}</version>
+                        <configuration>
+                            <schemaRegistryUrls>
+                                <param>${confluent.schema.registry.url}</param>
+                            </schemaRegistryUrls>
+                        </configuration>
+                        <executions>
+                            <!-- Validate the syntax of the Avro Schema -->
+                            <execution>
+                                <id>validate</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>validate</goal>
+                                </goals>
+                                <configuration>
+                                    <subjects>
+                                        <customer-value>src/test/resources/avro/backward/incompatible-change/customer-demo3-backward-v2.avsc</customer-value>
+                                    </subjects>
+                                    <schemaTypes>
+                                        <customer-value>AVRO</customer-value>
+                                    </schemaTypes>
+                                </configuration>
+                            </execution>
+
+                            <!-- Test the Schema Compatibility without the need for a running Schema Registry -->
+                            <execution>
+                                <id>test-local</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>test-local-compatibility</goal>
+                                </goals>
+                                <configuration>
+                                    <schemas>
+                                        <!-- The next version of the schema: Example with compatible change -->
+                                        <customer-value>src/test/resources/avro/backward/compatible-change/customer-demo3-backward-v2.avsc</customer-value>
+                                        <!-- The next version of the schema: Example with incompatible change -->
+<!--                                        <customer-value>src/test/resources/avro/backward/incompatible-change/customer-demo3-backward-v2.avsc</customer-value>-->
+                                    </schemas>
+                                    <schemaTypes>
+                                        <customer-value>AVRO</customer-value>
+                                    </schemaTypes>
+                                    <previousSchemaPaths>
+                                        <!-- The current version of the schema -->
+                                        <customer-value>src/main/resources/avro/backward/customer-demo3-backward-v1.avsc</customer-value>
+                                    </previousSchemaPaths>
+                                    <compatibilityLevels>
+                                        <!-- Perform Backward compatibility check -->
+                                        <customer-value>BACKWARD</customer-value>
+                                    </compatibilityLevels>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>schema-compatibility-check-real-schema-registry</id>
+            <properties>
+                <!-- The purpose of the demo is to show the                 -->
+                <maven.test.skip>true</maven.test.skip>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <!-- https://mvnrepository.com/artifact/io.confluent/kafka-schema-registry-maven-plugin -->
+                        <groupId>io.confluent</groupId>
+                        <artifactId>kafka-schema-registry-maven-plugin</artifactId>
+                        <version>${confluent.version}</version>
+                        <configuration>
+                            <schemaRegistryUrls>
+                                <param>${confluent.schema.registry.url}</param>
+                            </schemaRegistryUrls>
+                        </configuration>
+                        <executions>
+                            <!-- Validate the syntax of the Avro Schema -->
+                            <execution>
+                                <id>validate</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>validate</goal>
+                                </goals>
+                                <configuration>
+                                    <subjects>
+                                        <customer-value>
+                                            src/main/resources/avro/backward/customer-demo3-backward-v1.avsc
+                                        </customer-value>
+                                    </subjects>
+                                    <schemaTypes>
+                                        <customer-value>AVRO</customer-value>
+                                    </schemaTypes>
+                                </configuration>
+                            </execution>
+
+                            <!-- This is just here for the demo to register the first version of the Avro Schema -->
+                            <execution>
+                                <id>register-schema-v1</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>register</goal>
+                                </goals>
+                                <configuration>
+                                    <subjects>
+                                        <customer-value>src/main/resources/avro/backward/customer-demo3-backward-v1.avsc</customer-value>
+                                    </subjects>
+                                    <schemaTypes>
+                                        <customer-value>AVRO</customer-value>
+                                    </schemaTypes>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>set-compatibility</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>set-compatibility</goal>
+                                </goals>
+                                <configuration>
+                                    <compatibilityLevels>
+                                        <customer-value>BACKWARD</customer-value>
+                                        <__GLOBAL>BACKWARD</__GLOBAL>
+                                    </compatibilityLevels>
+                                </configuration>
+                            </execution>
+
+                            <!-- At this point the first version of the Schema is already registered -->
+                            <execution>
+                                <id>test-compatibility</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>test-compatibility</goal>
+                                </goals>
+                                <configuration>
+                                    <subjects>
+                                        <!-- TODO DEMO -->
+                                        <!-- The next version of the schema: Example with breaking change -->
+                                        <customer-value>src/test/resources/avro/backward/incompatible-change/customer-demo3-backward-v2.avsc</customer-value>
+                                    </subjects>
+                                    <schemaTypes>
+                                        <customer-value>AVRO</customer-value>
+                                    </schemaTypes>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>register-updated-schema</id>
+                                <goals>
+                                    <goal>register</goal>
+                                </goals>
+                                <configuration>
+                                    <subjects>
+                                        <customer-value>
+                                            src/test/resources/avro/backward/incompatible-change/customer-demo3-backward-v2.avsc
+                                        </customer-value>
+                                    </subjects>
+                                    <schemaTypes>
+                                        <customer-value>AVRO</customer-value>
+                                    </schemaTypes>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

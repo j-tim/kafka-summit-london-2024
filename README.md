@@ -11,4 +11,4 @@ Demo code for our talk at the Kafka Summit 2024 in London.
 **Demos**:
 * [Demo 1 - Backward Compatibility by Kosta](demo-1-backward.md)
 * [Demo 2 - Forward Compatibility by Kosta](demo-2-forward.md)
-* Demo 3 - Compatibility testing by Tim
+* [Demo 3 - Compatibility testing by Tim](demo-3-compatibility-testing.md)
