@@ -22,4 +22,9 @@ public class KafkaTopicsConfiguration {
         return TopicBuilder.name("customers-topic-forward")
                 .build();
     }
+    @Bean
+    public NewTopic demoTopicStreams() {
+        return TopicBuilder.name("forward-output-topic")
+            .build();
+    }
 }

@@ -20,6 +20,7 @@
         <!-- https://mvnrepository.com/artifact/com.github.javafaker/javafaker -->
         <javafaker.version>1.0.2</javafaker.version>
         <avro.version>1.11.3</avro.version>
+        <confluent.kafka.version>7.6.0</confluent.kafka.version>
     </properties>
     <dependencies>
 
@@ -27,6 +28,15 @@
             <groupId>org.apache.avro</groupId>
             <artifactId>avro</artifactId>
             <version>${avro.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-streams</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.confluent</groupId>
+            <artifactId>kafka-streams-avro-serde</artifactId>
+            <version>${confluent.kafka.version}</version>
         </dependency>
         <!-- https://packages.confluent.io/maven/io/confluent/kafka-avro-serializer/ -->
         <dependency>

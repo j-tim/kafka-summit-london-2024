@@ -27,10 +27,29 @@ spring:
 #         Delegate deserializers
         spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
         spring.deserializer.value.delegate.class: io.confluent.kafka.serializers.KafkaAvroDeserializer
+    streams:
+      application-id: kafka-streams-example-app
+      bootstrap-servers: ${spring.kafka.bootstrap-servers}
+      # This setting is here to don't wait until the buffer is full
+      properties:
+        schema.registry.url: http://schema-registry:8081
+        default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+        default.value.serde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
+        # LogAndFailExceptionHandler is the default!
+        default.deserialization.exception.handler: org.apache.kafka.streams.errors.LogAndFailExceptionHandler
+      state-store-cache-max-size: 0
+    #        default.deserialization.exception.handler: org.apache.kafka.streams.errors.LogAndContinueExceptionHandler
+    #        default.deserialization.exception.handler: org.springframework.kafka.streams.RecoveringDeserializationExceptionHandler
 
     properties:
       schema.registry.url: http://localhost:8081
-
+merak-kafka:
+  example:
+    streams:
+      output:
+        topicName: backward-output-topic
+    producer:
+      topicName: customers-topic-backward
 management:
   endpoints:
     web:

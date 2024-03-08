@@ -14,6 +14,19 @@ spring:
       properties:
         auto.register.schemas: false
         avro.remove.java.properties: true
+    streams:
+      application-id: kafka-streams-example-app
+      bootstrap-servers: ${spring.kafka.bootstrap-servers}
+      # This setting is here to don't wait until the buffer is full
+      properties:
+        schema.registry.url: http://schema-registry:8081
+        default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+        default.value.serde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
+        # LogAndFailExceptionHandler is the default!
+        default.deserialization.exception.handler: org.apache.kafka.streams.errors.LogAndFailExceptionHandler
+      state-store-cache-max-size: 0
+    #        default.deserialization.exception.handler: org.apache.kafka.streams.errors.LogAndContinueExceptionHandler
+    #        default.deserialization.exception.handler: org.springframework.kafka.streams.RecoveringDeserializationExceptionHandler
 
     properties:
       schema.registry.url: http://localhost:8081
@@ -24,7 +37,13 @@ management:
     web:
       exposure:
         include: "*"
-
+merak-kafka:
+  example:
+    streams:
+      output:
+        topicName: forward-output-topic
+    producer:
+      topicName: customers-topic-forward
 kafka:
   producer:
     enabled: true
