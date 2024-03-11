@@ -29,8 +29,8 @@ class KafkaAvroSerializerDeserializerDemoTest {
     }
 
     /**
-     * auto.register.schemas=true
-     * avro.remove.java.properties=false
+     * auto.register.schemas=false
+     * avro.remove.java.properties=false (default)
      * <p>
      * Schema used during Serialization derived from: {@link CustomerBackwardDemo#SCHEMA$}
      * <p>
@@ -196,6 +196,10 @@ class KafkaAvroSerializerDeserializerDemoTest {
         byte[] serialized = kafkaAvroSerializer.serialize("customers", customer);
 
         assertThat(serialized).isNotEmpty();
+
+        // Verify the no new schemas is registered
+        List<ParsedSchema> registeredSchemas = mockSchemaRegistryClient.getSchemas("customers", false, false);
+        assertThat(registeredSchemas).hasSize(1);
     }
 
     /**
@@ -226,7 +230,7 @@ class KafkaAvroSerializerDeserializerDemoTest {
 
         assertThat(deserialized).isNotNull();
 
-        // Verify no new schemas are registered
+        // Verify the new schemas is registered
         List<ParsedSchema> registeredSchemas = mockSchemaRegistryClient.getSchemas("customers", false, false);
         assertThat(registeredSchemas).hasSize(2);
 
