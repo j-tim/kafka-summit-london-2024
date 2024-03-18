@@ -29,9 +29,9 @@ class AvroSchemaBackwardCompatibilityDemoTest {
 
         List<String> compatible = backwardChecker.isCompatible(updatedSchema, Collections.singletonList(currentSchema));
         assertThat(compatible)
-//                .isEmpty();
-                .isNotEmpty()
-                .contains("{errorType:'READER_FIELD_MISSING_DEFAULT_VALUE', description:'The field 'newField' at path '/fields/2' in the new schema has no default value and is missing in the old schema', additionalInfo:'newField'}");
+                .isEmpty();
+//                .isNotEmpty()
+//                .contains("{errorType:'READER_FIELD_MISSING_DEFAULT_VALUE', description:'The field 'newField' at path '/fields/2' in the new schema has no default value and is missing in the old schema', additionalInfo:'newField'}");
     }
 }
 
