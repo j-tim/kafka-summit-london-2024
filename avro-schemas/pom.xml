@@ -206,7 +206,7 @@
         <profile>
             <id>schema-compatibility-check-real-schema-registry</id>
             <properties>
-                <!-- The purpose of the demo is to show the                 -->
+                <!-- The purpose of the demo is to show the Schema Registry plugin only -->
                 <maven.test.skip>true</maven.test.skip>
             </properties>
             <build>

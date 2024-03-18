@@ -18,8 +18,7 @@
     {
       "name": "newField",
       "type": "string",
-      "doc": "Some new field we would like to introduce",
-      "default": "Hello Kafka Summit"
+      "doc": "Some new field we would like to introduce"
     }
   ]
 }
