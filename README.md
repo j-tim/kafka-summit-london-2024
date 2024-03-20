@@ -8,6 +8,8 @@ Demo code for our talk at the Kafka Summit 2024 in London.
 
 **Speakers**: Kosta Chuturkov & Tim van Baarsen
 
+**Slides**: [Slides](https://speakerdeck.com/timvanbaarsen/kafka-summit-london-2024-evolve-your-schemas-in-a-better-way)
+
 **Demos**:
 * [Demo 1 - Backward Compatibility by Kosta](demo-1-backward.md)
 * [Demo 2 - Forward Compatibility by Kosta](demo-2-forward.md)
