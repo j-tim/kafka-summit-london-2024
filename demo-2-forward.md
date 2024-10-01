@@ -21,7 +21,7 @@
 ## Start infrastructure
 
 ```bash
-docker-compose -f docker-compose.yml up -d
+docker compose -f docker-compose.yml up -d
 ```
 
 
@@ -50,10 +50,10 @@ mvn spring-boot:run -Dspring-boot.run.fork=false -Dspring-boot.run.profiles=forw
 * Stop demo applications
 
 ```bash
-docker-compose -f docker-compose-applications-demo2-forward.yml down -v
+docker compose -f docker-compose-applications-demo2-forward.yml down -v
 ```
 
 * All Components
 ```bash
-docker-compose -f docker-compose.yml -f docker-compose-applications-demo2-forward.yml down -v
+docker compose -f docker-compose.yml -f docker-compose-applications-demo2-forward.yml down -v
 ```

@@ -3,13 +3,13 @@
 Make sure to stop demo 2:
 
 ```bash
-docker-compose -f docker-compose.yml -f docker-compose-applications-demo2-forward.yml down -v
+docker compose -f docker-compose.yml -f docker-compose-applications-demo2-forward.yml down -v
 ```
 
 Start the infrastructure only:
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 Show a breaking change (adding a required field):
@@ -60,5 +60,5 @@ cd avro-schemas
 Shutdown:
 
 ```bash
-docker-compose down -v
+docker compose down -v
 ```
